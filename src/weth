@@ -1,0 +1,2 @@
+#!/bin/sh
+curl -s "https://wttr.in/Evanston?format=1&u" | grep -Po "[-]?\d+°F"

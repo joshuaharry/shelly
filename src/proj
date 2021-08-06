@@ -1,0 +1,68 @@
+#!/bin/sh
+set -e
+VERSION=1.0.0
+
+usage()
+{
+cat <<EOF
+proj
+
+USAGE
+proj <dirname>     Create a new project at \$current_directory/dirname.
+
+FLAGS
+--help, -h:        Display this help message and exit.
+--version, -v:     Display the current version and exit.
+EOF
+}
+
+case "$1" in
+    --help|-h)
+        usage
+        exit 0
+    ;;
+    --version|-v)
+        printf "%s\n" "$VERSION"
+        exit 0
+    ;;
+    *)
+        # Do nothing
+        ;;
+esac
+
+if [ -z "$1" ]; then
+    printf "%s\n-------------\n" "Error: You must tell proj the name of your project."
+    usage
+    exit 1
+fi
+
+if [ -n "$2" ]; then
+    printf "%s\n-------------\n" "Error: proj only takes one argument."
+    usage
+    exit 1
+fi
+
+PROJECT_DIRECTORY="$PWD"/"$1"
+
+mkdir "$PROJECT_DIRECTORY"
+
+cat << EOF > "$PROJECT_DIRECTORY"/README.md
+# $1
+EOF
+
+cat << EOF > "$PROJECT_DIRECTORY/LICENSE.md"
+Copyright <$(date +'%Y')> <Joshua Hoeflich>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+EOF
+
+touch "$PROJECT_DIRECTORY"/.gitignore
+
+git init "$PROJECT_DIRECTORY"
+cd "$PROJECT_DIRECTORY" || exit 1
+git add .
+git commit -m "Adds LICENSE, README, and empty .gitignore"

@@ -1,0 +1,9 @@
+#!/bin/sh
+VOLUME_ICON=""
+if [ "$(pamixer --get-mute)" = "true" ]; then
+	VOLUME_ICON="(-)"
+else
+	VOLUME_ICON="(+)"
+fi
+
+printf "%s %s%%" "$VOLUME_ICON" "$(pamixer --get-volume)"
