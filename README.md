@@ -1,8 +1,8 @@
 # Shelly
 Shell scripts that I want on Nix OS.
 
-## Installing
+## Installing Without Nix
 Run `make install`
 
-## Removing
-Run `make uninstall`
+## Removing Without Nix
+Run `make remove`
